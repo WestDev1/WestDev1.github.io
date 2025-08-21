@@ -1,2 +1,674 @@
-# WestDev1.github.io
-EVO ITEMS GALERIE 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GALERIE D'ITEMS EVO</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#0f1521;
+    --card:#131b2a;
+    --muted:#cbd5e1;
+    --text:#ffffff;              
+    --accent:#7c3aed;            
+    --accent-2:#22d3ee;          
+    --ring:#1f2a44;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+    color:var(--text); background:var(--bg); overflow-x:hidden;
+  }
+
+  /* --- FOND --- */
+  .bg-glow{
+    position:fixed; inset:0; z-index:-1; overflow:hidden;
+    background:
+      radial-gradient(1400px 700px at 15% -10%, #0f1a2e 0%, transparent 60%),
+      radial-gradient(1200px 600px at 85% 110%, #0a1222 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 80%, #0d162a 0%, transparent 60%),
+      linear-gradient(#0b0f14, #0b0f14);
+  }
+  .bg-glow::before, .bg-glow::after{
+    content:""; position:absolute; inset:-20%;
+    background:
+      radial-gradient(closest-side at 20% 30%, rgba(124,58,237,.25), transparent 60%),
+      radial-gradient(closest-side at 80% 65%, rgba(34,211,238,.22), transparent 60%),
+      radial-gradient(closest-side at 35% 80%, rgba(99,102,241,.18), transparent 60%),
+      conic-gradient(from 0deg, rgba(124,58,237,.10), rgba(34,211,238,.10), rgba(124,58,237,.10));
+    filter: blur(60px) saturate(120%);
+    mix-blend-mode: screen;
+    animation: drift 22s linear infinite;
+  }
+  .bg-glow::after{
+    animation: drift2 28s linear infinite reverse;
+    opacity:.9;
+  }
+  @keyframes drift{
+    0%{ transform: translate3d(0,0,0) rotate(0deg) }
+    50%{ transform: translate3d(2%, -1%, 0) rotate(20deg) }
+    100%{ transform: translate3d(0,0,0) rotate(0deg) }
+  }
+  @keyframes drift2{
+    0%{ transform: translate3d(0,0,0) rotate(0deg) }
+    50%{ transform: translate3d(-2%, 1%, 0) rotate(-18deg) }
+    100%{ transform: translate3d(0,0,0) rotate(0deg) }
+  }
+
+  /* --- HEADER FIXE (cloué en haut) --- */
+  header{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 2000;             /* au-dessus de tout */
+    background: transparent;   /* “dans le vide” */
+    border-bottom: none;
+    box-shadow: none;
+  }
+  .header-row{
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    max-width: 1200px;
+    margin: 0 auto;
+    color:#fff; text-shadow:0 1px 0 rgba(0,0,0,.25);
+  }
+  .credits{
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .title{
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: .3px;
+    font-size: 20px;
+  }
+  .counter{
+    text-align: right;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .counter .num{
+    font-weight: 700;
+    color: var(--accent-2);   
+  }
+
+  /* --- BARRE DE RECHERCHE (sous header, séparée) --- */
+  .toolbar{
+    display: flex;
+    justify-content: center;
+    padding: 100px 16px 16px; /* espace sous le header fixe */
+  }
+  .search{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border: 1px solid var(--ring);
+    border-radius: 12px;
+    padding: 10px 12px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 0 0 1px rgba(124,58,237,.12),
+                inset 0 0 0 1px rgba(34,211,238,.08);
+  }
+  .search input{
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 16px;
+  }
+  .search .clear{
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1;
+    padding: 0 4px;
+  }
+
+  /* --- CONTENU --- */
+  .wrap{ max-width:1200px; margin:0 auto; padding:24px; }
+
+  .grid{
+    display:grid; gap:14px; padding:0 6px 24px; grid-template-columns: repeat(auto-fill, minmax(160px,1fr));
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(19,27,42,.85), rgba(19,27,42,.7));
+    border:1px solid var(--ring); border-radius:16px; overflow:hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,.35), inset 0 0 0 1px rgba(124,58,237,.06);
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  }
+  .card:hover{ transform: translateY(-2px); border-color: rgba(124,58,237,.45); box-shadow: 0 10px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(34,211,238,.15) inset; }
+  .thumb{
+    background:#0c111b; display:flex; align-items:center; justify-content:center; height:150px;
+    border-bottom:1px solid var(--ring);
+  }
+  .thumb img{ max-width:100%; max-height:100%; object-fit:contain; display:block; }
+  .meta{ display:flex; align-items:center; gap:8px; padding:10px 12px; color:#fff; }
+  .name{ flex:1; font-size:14px; line-height:1.25; color:#fff; }
+  .copy-btn{
+    display:inline-grid; place-items:center; width:34px; height:34px; border-radius:10px; border:1px solid var(--ring);
+    background:linear-gradient(180deg, #111827, #0d1422); color:#ffffff; cursor:pointer;
+    transition: transform .08s ease, border-color .12s ease, background .12s ease;
+  }
+  .copy-btn:hover{ transform: translateY(-1px); border-color: rgba(124,58,237,.45); }
+  .copy-btn svg{ width:18px; height:18px }
+  .copy-btn.copied{ color:#22c55e; border-color:#22c55e; }
+  .empty{ text-align:center; color:var(--muted); padding:40px 12px; font-size:15px; }
+  .toast{
+    position:fixed; right:16px; bottom:16px; background:#111827; border:1px solid var(--ring); color:#fff;
+    padding:10px 12px; border-radius:12px; box-shadow: 0 10px 24px rgba(0,0,0,.45);
+    opacity:0; transform: translateY(10px); transition: opacity .18s ease, transform .18s ease;
+  }
+  .toast.show{ opacity:1; transform: translateY(0); }
+</style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header>
+    <div class="header-row">
+      <div class="credits">Crédits images : EVO RP - West_dev & LeChataignier</div>
+      <div class="title">GALERIE D'ITEMS EVO</div>
+      <div class="counter">Total : <span class="num" id="count">0</span> items</div>
+    </div>
+  </header>
+
+  <!-- Barre de recherche séparée -->
+  <div class="toolbar">
+    <div class="search" role="search">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/></svg>
+      <input id="q" type="search" placeholder="Rechercher un item…" autocomplete="off" spellcheck="false" />
+      <button class="clear" id="clearBtn" title="Effacer">×</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div id="grid" class="grid" aria-live="polite"></div>
+    <div id="empty" class="empty" hidden>Aucun résultat.</div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ton script JS ici */
+
+
+
+
+/* ------------------------ VOTRE BASE D'ITEMS ------------------------ */
+const itemDatabase = [
+  {
+    name: 'Damsautiste',
+    weight: 0.1,
+    image: 'images/dams8.png'
+  },
+  {
+    name: 'Hot dog',
+    weight: 0.1,
+    image: 'images/hotdog2.png'
+  },
+
+  { name: 'Chicha', weight: 0.2, image: 'images/Chicha.png' },
+  { name: 'Charbon chi', weight: 0.1, image: 'images/charb.png' },
+  { name: 'Snus snex', weight: 0.0, image: 'images/snus.png' },
+
+  { name: '$ Cash', weight: 0.0, image: 'images/cashh.png' },
+  { name: '$ Cash sale', weight: 0.0, image: 'images/old_cash.png' },
+  { name: 'Pesos', weight: 0.0, image: 'images/old_cash.png' },
+  { name: 'Pesos sale', weight: 0.0, image: 'images/pesos_sale.png' },
+  { name: 'F. weed', weight: 0.1, image: 'images/feuille.png' },
+  { name: "PCH weed", weight: 0.1, image: 'images/weed1.png' },
+  { name: 'Graine weed', weight: 0.0, image: 'images/graine.png' },
+  { name: 'Fentanyl', weight: 0.1, image: 'images/fentanyl.png' },
+  { name: 'Pst Lourd', weight: 2.0, image: 'images/cal.png' },
+  { name: 'Pot', weight: 0.3, image: 'images/pot.png' },
+  { name: 'Hache', weight: 0.9, image: 'images/hache.png' },
+  { name: 'Fertilisant', weight: 0.02, image: 'images/fertilisant.png' },
+  { name: "PCH ak47", weight: 0.1, image: 'images/ak47.png' },
+  { name: "PCH amnesia", weight: 0.1, image: 'images/amnesia.png' },
+  { name: "PCH purple", weight: 0.1, image: 'images/purple.png' },
+  { name: "PCH meth", weight: 0.1, image: 'images/meth_blue.png' },
+  { name: "PCH ogkush", weight: 0.1, image: 'images/OGKUSH.png' },
+  { name: "PCH widow", weight: 0.1, image: 'images/WW.png' },
+  { name: "PCH cocaine", weight: 0.1, image: 'images/cocaine_baggy_1.png' },
+  { name: "PCH skunk", weight: 0.1, image: 'images/skunk.png' },
+  { name: "Permis", weight: 0.1, image: 'images/Permis.png' },
+  { name: "Ordinateur", weight: 0.1, image: 'images/laptop2.png' },
+  { name: "Cash blanchi", weight: 0.0, image: 'images/cash_sale.png' },
+  { name: "By pass", weight: 0.0, image: 'images/west pp.png' },
+  { name: 'Box arsenal', weight: 0.5, image: 'images/box.png' }, // 
+  { name: 'Roue', weight: 0.2, image: 'images/wheel_1.png' },
+  { name: "PCH xyla", weight: 0.1, image: 'images/xyla.png' },
+  { name: "PCH pulse", weight: 0.1, image: 'images/pulse.png' },
+  { name: "PCH scar", weight: 0.1, image: 'images/scar2.png' },
+  { name: "PCH sylex", weight: 0.1, image: 'images/sylex.png' },
+  { name: "PCH saint", weight: 0.1, image: 'images/saint.png' },
+
+  { name: 'Pieds', weight: 0.8, image: 'images/Pieds.png' },
+  { name: "Main", weight: 0.7, image: 'images/Main.png' },
+  { name: "Scal", weight: 0.1, image: 'images/scal.png' },
+  { name: "Couperet", weight: 0.2, image: 'images/Couperet.png' },
+  { name: "Couteau z", weight: 0.1, image: 'images/Couteau z.png' },
+  { name: "Extracteur", weight: 0.4, image: 'images/Extracteur.png' },
+
+  // CATEG ARME LOURD
+  { name: 'AK M', weight: 2.5, image: 'images/weapon_assaultrifle_mk2.png' },
+  { name: 'FusiL M4', weight: 3.2, image: 'images/m4.png' },
+  { name: 'Fusil M16', weight: 3.6, image: 'images/weapon_carbinerifle.png' },
+  { name: 'Tech9', weight: 2.0, image: 'images/weapon_machinepistol.png' },
+  { name: 'Uzi', weight: 2.0, image: 'images/weapon_microsmg.png' },
+  { name: 'Taser', weight: 1.0, image: 'images/taser.png' },
+
+  // CATEG ARMES BLANCHES
+  { name: 'Machette', weight: 0.2, image: 'images/weapon_machete.png' },
+  { name: 'Pied biche', weight: 0.2, image: 'images/biche.png' },
+
+  { name: 'Torche', weight: 0.2, image: 'images/lampe.png' },
+
+  { name: 'Clé Anglaise', weight: 2.0, image: 'images/weapon_wrench.png' },
+  { name: 'Couteau', weight: 0.5, image: 'images/weapon_switchblade.png' },
+  { name: 'Matraque', weight: 1.2, image: 'images/weapon_nightstick.png' },
+  { name: 'Cran d\'arret', weight: 0.6, image: 'images/weapon_switchblade2.png' },
+  { name: 'Marteau', weight: 1.5, image: 'images/weapon_hammer.png' },
+  { name: 'Hachette', weight: 1.8, image: 'images/weapon_hatchet.png' },
+  { name: 'B baseball', weight: 0.3, image: 'images/bat22.png' },
+  { name: 'Hache Guerre', weight: 3.0, image: 'images/weapon_battleaxe.png' },
+
+  // Pistolets
+  { name: 'Pst MkII', weight: 1.6, image: 'images/weapon_GlockAP.png' },
+  { name: 'Pst combat', weight: 1.3, image: 'images/weapon_combatpistol.png' },
+  { name: 'Pst lourd', weight: 1.6, image: 'images/weapon_heavypistol.png' },
+  { name: 'Pst perico', weight: 1.3, image: 'images/weapon_doubleaction.png' },
+  { name: 'Rvl double', weight: 1.8, image: 'images/weapon_revolver.png' },
+  { name: 'Pétoire', weight: 1.0, image: 'images/weapon_snspistol.png' },
+  { name: 'Pst vintage', weight: 1.2, image: 'images/weapon_vintagepistol.png' },
+  { name: 'Beretta', weight: 1.3, image: 'images/weapon_pistol.png' },
+  { name: 'Pst ceramic', weight: 1.3, image: 'images/weapon_ceramicpistol.png' },
+  { name: 'Pétoire MkII', weight: 1.5, image: 'images/weapon_snspistol_mk2.png' },
+
+  // Mitrailleuses
+  { name: 'Skorpion', weight: 2.0, image: 'images/weapon_minismg.png' },
+  { name: 'Mitrs combat', weight: 3.0, image: 'images/weapon_combatmg.png' },
+  { name: 'Mitrailleuse', weight: 3.0, image: 'images/weapon_mg.png' },
+
+  // Fusils
+  { name: 'Fsl Lourd', weight: 2.0, image: 'images/mk14.png' },
+  { name: 'Fsl combat', weight: 2.5, image: 'images/scar.png' },
+  { name: 'Crb MkII', weight: 2.8, image: 'images/weapon_specialcarbine_mk2.png' },
+  { name: 'Crb spéciale', weight: 2.2, image: 'images/weapon_specialcarbine.png' },
+  { name: 'Fsl compact', weight: 2.5, image: 'images/weapon_fusil_compact.png' },
+  { name: 'Fsl d\'assaut', weight: 2.0, image: 'images/m4.png' },
+  { name: 'Crb service', weight: 2.9, image: 'images/weapon_carbinerifle.png' },
+
+  // Fusils à pompe
+  { name: 'Fsl à pompe', weight: 1.8, image: 'images/weapon_pumpshotgun.png' },
+  { name: 'Pompe double', weight: 2.0, image: 'images/weapon_dbshotgun.png' },
+  { name: 'Mousquet', weight: 1.5, image: 'images/weapon_musket.png' },
+  { name: "Aug", weight: 2.0, image: 'images/milit.png' },
+  { name: "RPK", weight: 2.0, image: 'images/weapon_mg.png' },
+  { name: "Scar", weight: 2.0, image: 'images/WEAPON_M110.png' },
+
+  // Projectiles
+  { name: 'Cocktail M', weight: 0.5, image: 'images/ex-cocktail-molotov.png' },
+
+  // Fusils de précision
+  { name: 'Sniper MkII', weight: 3.5, image: 'images/weapon_heavysniper.png' },
+  { name: 'AK U', weight: 2.0, image: 'images/weapon_compactrifle.png' },
+  { name: 'MP 5', weight: 2.0, image: 'images/MP5.png' },
+
+  // CATEG ITEMS 
+  { name: 'Radio', weight: 0.3, image: 'images/radio.png' },
+  { name: 'Corde', weight: 0.1, images: 'images/Corde.png' },
+  { name: 'Scotch', weight: 0.1, images: 'images/STT.png' },
+  { name: 'Ordinateur', weight: 0.6, image: 'images/stolencomputer.png' },
+  { name: 'Clés usb', weight: 0.1, image: 'images/usb_black.png' },
+  { name: 'Clés crypter', weight: 0.1, image: 'images/pendrive.png' },
+  { name: 'Kevlar', weight: 0.2, image: 'images/kevlar.png' },
+  { name: 'Cagoule', weight: 0.1, image: 'images/cagoule.png' },
+  { name: 'Capote', weight: 0.0, image: 'images/capote.png' },
+  { name: 'Iphone 15', weight: 0.1, image: 'images/black_phone2.png' },
+  { name: 'Télévision', weight: 0.6, image: 'images/stolentv.png' },
+  { name: 'Sac', weight: 0.1, image: 'images/duffel.png' },
+  { name: 'Gants', weight: 0.1, image: 'images/gant.png' },
+  { name: 'Rolex', weight: 0.2, image: 'images/rolex.png' },
+  { name: 'Pizza', weight: 0.1, image: 'images/pizzabox.png' },
+  { name: 'Bracelet', weight: 0.0, image: 'images/Bracelet.png' },
+  { name: 'Joint', weight: 0.0, image: 'images/joint4.png' },
+  { name: 'Papiers', weight: 0.0, image: 'images/newspaper_folded.png' },
+  { name: 'Caméra', weight: 0.1, image: 'images/camera.png' },
+  { name: 'Seringue', weight: 0.1, image: 'images/Seringue.png' },
+  { name: 'Doliprane', weight: 0.0, image: 'images/Doli.png' },
+  { name: 'K Crochetage', weight: 0.5, image: 'images/kit.png' },
+  { name: 'Extincteur', weight: 0.5, image: 'images/weapon_fireextinguisher.png' },
+  { name: 'canne à pêche', weight: 0.2, image: 'images/canne.peche.png' }, // CANE 
+  { name: 'Seringue', weight: 0.0, image: 'images/duffel.png' },
+  { name: 'Menottes', weight: 0.1, image: 'images/menotte.png' },
+  { name: 'Recycleur', weight: 0.3, image: 'images/elock.png' },
+  { name: 'Seau', weight: 0.1, image: 'images/pot.png' },
+  { name: 'Clés véhicule', weight: 0.0, image: 'images/key1.png' },
+  { name: 'Bélier', weight: 0.3, image: 'images/belier.png' },
+  { name: 'Dash caméra', weight: 0.1, image: 'images/dashcam.png' },
+  { name: 'Eau', weight: 0.02, image: 'images/water.png' },
+
+  // TROOLLL 
+  { name: 'Double god', weight: 0.0, image: 'images/double god-Photoroom.png' },
+  { name: 'Pst sexuel', weight: 0.2, image: 'images/Pst sexuelle-Photoroom.png' },
+  { name: 'Mini sexuel', weight: 0.2, image: 'images/Mini sexuelle-Photoroom.png' },
+  { name: 'Rocket sexuel', weight: 0.2, image: 'images/rocket sexuelle-Photoroom.png' },
+
+  { name: 'Bague or', weight: 0.1, image: 'images/ring2.png' },
+  { name: 'Bague', weight: 0.1, image: 'images/engage_ring.png' },
+  { name: 'Chaine', weight: 0.1, image: 'images/chain_nocap.png' },
+  { name: 'Bracelet', weight: 0.1, image: 'images/.png' },
+  { name: 'Chaine s', weight: 0.1, image: 'images/chain_skull.png' },
+  { name: 'Chaine m', weight: 0.1, image: 'images/chain_bdb.png' },
+  { name: 'Diams', weight: 0.1, image: 'images/megaring.png' },
+  { name: 'Station meth', weight: 0.1, image: 'images/chemistry_station.png' },
+
+  { name: 'Acid', weight: 0.1, image: 'images/acid.png' },
+  { name: 'Acetone', weight: 0.1, image: 'images/acetone3.png' },
+  { name: 'Perceuse', weight: 0.4, image: 'images/drill_blue2.png' },
+  { name: 'Bucket', weight: 0.1, image: 'images/burger-shotnuggets.png' },
+  { name: 'PS5', weight: 0.2, image: 'images/ps5.png' },
+  { name: 'Carte accès', weight: 0.0, image: 'images/securitycard_blue.png' },
+  { name: 'Detector', weight: 0.3, image: 'images/metaldetector.png' },
+  { name: 'Jerrycan', weight: 0.2, image: 'images/jerry_can.png' },
+  { name: 'PC gold', weight: 0.2, image: 'images/laptop_gold.png' },
+  { name: 'Labo', weight: 0.6, image: 'images/lab.png' },
+  { name: 'Mexican', weight: 0.0, image: 'images/grilled_cheese_fries.png' },
+  { name: 'PS2', weight: 0.2, image: 'images/ps2.png' },
+  { name: 'Stereo', weight: 0.2, image: 'images/stolenstereo.png' },
+  { name: 'Prime', weight: 0.0, image: 'images/prime.png' },
+  { name: 'Gameboy', weight: 0.1, image: 'images/px_gameboy.png' },
+  { name: 'Datadrive', weight: 0.1, image: 'images/datadrive.png' },
+  { name: 'Tablette', weight: 0.4, image: 'images/tablet.png' },
+  { name: 'Vodka', weight: 0.1, image: 'images/vodka.png' },
+  { name: 'Powersal', weight: 0.8, image: 'images/powersaw3.png' },
+  { name: 'Iphone 14', weight: 0.2, image: 'images/black_phone2.png' },
+  { name: 'Aluminumoxide', weight: 0.1, image: 'images/aluminumoxide.png' },
+  { name: 'Bitcoin', weight: 0.1, image: 'images/bitcoin.png' },
+  { name: 'Chataignax', weight: 0.01, image: 'images/weapon_batton.png' },
+
+  { name: 'Cigar', weight: 0.0, image: 'images/cigar.png' },
+  { name: 'Fruit', weight: 0.3, image: 'images/fruit-box.png' },
+  { name: 'Micro onde', weight: 0.4, image: 'images/microwave.png' },
+  { name: 'Bag dollars', weight: 0.3, image: 'images/moneybag2.png' },
+  { name: 'Briquet', weight: 0.1, image: 'images/lighter_green.png' },
+  { name: 'Dusse', weight: 0.2, image: 'images/Dusse.png' },
+  { name: 'Viceuses', weight: 0.4, image: 'images/drill_yellow.png' },
+
+  { name: 'Soupe Mog', weight: 0.0, image: 'images/Mog.png' },
+  { name: 'Plateau beef', weight: 0.0, image: 'images/Beef.png' },
+  { name: 'Balais', weight: 0.0, image: 'images/pngtree-wizard-and-witch-s-broom-png-image_10016995-Photoroom.png' },
+  { name: 'Peppa', weight: 0.0, image: 'images/Peppa.png' },
+  { name: 'Tondeuse', weight: 0.0, image: 'images/tondeuse-Photoroom.png' },
+
+  { name: 'Peluche', weight: 0.0, image: 'images/PEPPPPPA-Photoroom.png' },
+  { name: 'Peppa ouhou', weight: 0.0, image: 'images/2PELUCHE-Photoroom.png' },
+  { name: 'C roulante', weight: 0.0, image: 'images/wheelchair.png' },
+  { name: 'Canne', weight: 0.0, image: 'images/walkstick.png' },
+  { name: 'Bande soin', weight: 0.0, image: 'images/firstaid_bandage2.png' },
+
+  { name: 'Wock', weight: 0.0, image: 'images/wock.png' },
+
+  { name: 'Éther', weight: 0.1, image: 'images/ether-Photoroom.png' },
+  { name: 'Iode', weight: 0.1, image: 'images/ephedrine.png' },
+  { name: 'Détergents', weight: 0.1, image: 'images/acid.png' },
+  { name: 'Poudre meth', weight: 0.0, image: 'images/meth_tray.png' },
+
+  { name: 'Lertisk han', weight: 0.0, image: 'images/lertisk -Photoroom.png' },
+  { name: 'Combinaison', weight: 0.2, image: 'images/combi-Photoroom.png' },
+
+  { name: 'Lertisk han', weight: 0.0, image: 'images/lertisk -Photoroom.png' },
+  { name: 'Combinaison', weight: 0.2, image: 'images/combi-Photoroom.png' },
+
+  { name: 'Burger', weight: 0.1, image: 'images/bacon_cheeseburger.png' },
+  { name: 'Nokia', weight: 0.2, image: 'images/Nokia.png' },
+  { name: 'Sprite', weight: 0.0, image: 'images/Sprite.png' },
+  { name: 'Bière', weight: 0.0, image: 'images/beer.png' },
+  { name: 'Cigarette', weight: 0.0, image: 'images/cigarette.png' },
+
+  { name: 'P américain', weight: 0.5, image: 'images/pame.png' },
+
+  { name: 'Saumon', weight: 0.2, image: 'images/cooked_fish.png' },
+  { name: 'Carpe', weight: 0.2, image: 'images/cooked_fish.png' },
+  { name: 'Doc Analyse', weight: 0.1, image: 'images/medical_records.png' },
+
+  { name: 'PCH mdma', weight: 0.1, image: 'images/MDMA.png' },
+  { name: 'PCH crack', weight: 0.1, image: 'images/CRACK.png' },
+
+  { name: 'Visa Detroit', weight: 0.1, image: 'images/VISA 1.png' },
+  { name: 'Permis', weight: 0.1, image: 'images/VISA 2.png' },
+  { name: 'AA12', weight: 2.0, image: 'images/12-Photoroom.png' },
+
+  { name: 'Fait moi mal', weight: 0.0, image: 'images/Collier a pic.png' },
+
+  { name: "Cocktail", weight: 0.1, image: 'images/cocktail.png' },
+  { name: "Rhum", weight: 0.1, image: 'images/rhum.png' },
+  { name: "Jack Daniel's", weight: 0.1, image: 'images/jack_daniels.png' },
+  { name: "Foie Gras", weight: 0.1, image: 'images/foie_gras.png' },
+  { name: "Caviar", weight: 0.1, image: 'images/caviar.png' },
+  { name: "Mojito", weight: 0.1, image: 'images/mojito.png' },
+  { name: "Red Bull", weight: 0.1, image: 'images/red_bull.png' },
+  { name: "Fruit Sec", weight: 0.1, image: 'images/fruit_sec.png' },
+  { name: "Eau Pétillante", weight: 0.1, image: 'images/eau_petillante.png' },
+  { name: "Champagne / Vin", weight: 0.1, image: 'images/champagne_vin.png' },
+  { name: "Café", weight: 0.1, image: 'images/Coffe.png' },
+  { name: "Salade de Fruits", weight: 0.1, image: 'images/salade_fruits.png' },
+
+  // PLAN ARMES
+  { name: "Pl M16", weight: 0.1, image: 'images/PL 2.png' }, // NO IMAGE 
+  { name: "Pl céramique", weight: 0.1, image: 'images/PL 2.png' },
+  { name: "Pl SPAS-12", weight: 0.1, image: 'images/PL SPAS 12.png' },
+  { name: "Pl ptoire MKll", weight: 0.1, image: 'images/PL PETOIRE MK2.png' },
+  { name: "Pl cran drt", weight: 0.1, image: 'images/PL 1.png' },
+  { name: "Pl pst MKll", weight: 0.1, image: 'images/PL 3.png' },
+  { name: "Pl Perforant", weight: 0.1, image: 'images/PL PERFORANT.png' },
+  { name: "PCH heroine", weight: 0.1, image: 'images/1gheroin.png' },
+
+  // COMPOSANTS 
+  { name: "Switch", weight: 0.3, image: 'images/CPST.png' },
+  { name: "Ptes creuses", weight: 0.3, image: 'images/POINTES CREUSE.png' },
+  { name: "Lean", weight: 0.3, image: 'images/lean.png' },
+  { name: "Codéine", weight: 0.1, image: 'images/codeine.png' },
+  { name: "Puff 9k", weight: 0.1, image: 'images/Puff 9k.png' },
+  { name: "Pst perfo", weight: 1.4, image: 'images/perfo.png' },
+  { name: "Bnd rouge", weight: 0.0, image: 'images/bnd-red.png' },
+  { name: "Bnd jaune", weight: 0.0, image: 'images/bnd-yellow.png' },
+  { name: "Bnd noir", weight: 0.0, image: 'images/bnd-black.png' },
+  { name: "Bnd bleu", weight: 0.0, image: 'images/bnd-blue.png' },
+  { name: "Clé voiture", weight: 0.1, image: 'images/kay-car1.png' },
+  { name: "Pavot", weight: 0.2, image: 'images/poppy.png' }, //poppy
+
+  // DEBUT BIJOUX 
+  { name: "B saphir", weight: 0.2, image: 'images/B safir.png' },
+  { name: "C saphir", weight: 0.2, image: 'images/C safir.png' },
+  { name: "B rubis", weight: 0.2, image: 'images/B rubis.png' },
+  { name: "C rubis", weight: 0.2, image: 'images/C rubis.png' },
+  { name: "B émeraude", weight: 0.2, image: 'images/B emraude.png' },
+  { name: "C émeraude", weight: 0.2, image: 'images/C emraude.png' },
+  { name: "B diamant", weight: 0.2, image: 'images/B diams.png' },
+  { name: "C diamant", weight: 0.2, image: 'images/C diams.png' },
+
+  // FOOD 2 
+  { name: "Onion rings", weight: 0.1, image: 'images/Onion-rings.png' },
+  { name: "Coca cola", weight: 0.1, image: 'images/ecola.png' },
+  { name: "Frites", weight: 0.1, image: 'images/Frites.png' },
+  { name: "Cheesburger", weight: 0.1, image: 'images/cheeseburger.png' },
+  { name: "Chickburger", weight: 0.1, image: 'images/chickenburger.png' },
+  { name: "Wrap", weight: 0.0, image: 'images/chicken_caesar_wrap.png' },
+
+  // WEED SPACE
+  { name: "Bonbon weed", weight: 0.1, image: 'images/bonbonweed.png' },
+  { name: "Sauce weed", weight: 0.1, image: 'images/sauce-weed.png' },
+  { name: "Crème weed", weight: 0.1, image: 'images/weed_butter.png' },
+  { name: "Pomm weed", weight: 0.1, image: 'images/weed_ream.png' },
+  { name: "F purple", weight: 0.1, image: 'images/F purple.png' },
+  { name: "F widow", weight: 0.1, image: 'images/F widow.png' },
+
+  // WEED SPACE
+  { name: "Saumon", weight: 0.1, image: 'images/fishbait.png' },
+  { name: "Carpe", weight: 0.1, image: 'images/fishbait.png' },
+  { name: "Truite", weight: 0.1, image: 'images/fishbait.png' },
+  { name: "Bar", weight: 0.1, image: 'images/fishbait.png' },
+  { name: "Dorade", weight: 0.1, image: 'images/fishbait.png' },
+
+  { name: "Moteur", weight: 0.3, image: 'images/Moteur.png' },
+  { name: "Vitre", weight: 0.3, image: 'images/Vitre.png' },
+  { name: "Carrosserie", weight: 0.3, image: 'images/Carrosserie.png' },
+  { name: "Chassis", weight: 0.3, image: 'images/mechanic_bumpers.png' },
+
+  { name: "Batterie", weight: 0.3, image: 'images/tunerchip.png' },
+  { name: "Frein", weight: 0.3, image: 'images/frain.png' },
+  { name: "Huile moteur", weight: 0.2, image: 'images/acetone3.png' },
+  { name: "Suspension", weight: 0.3, image: 'images/suspension1.png' },
+  { name: "Radio V", weight: 0.3, image: 'images/radioscanner.png' },
+
+  { name: "Crabe", weight: 0.2, image: 'images/Crabe.png' },
+  { name: "Crevette", weight: 0.1, image: 'image/Crevette.png' },
+  { name: "Homard", weight: 0.2, image: 'images/Homard.png' },
+  { name: "Menu xl", weight: 0.4, image: 'images/Menue xl.png' },
+  { name: "Donut f", weight: 0.4, image: 'images/Donuts f.png' },
+
+  { name: "L antique", weight: 0.1, image: 'images/L antique.png' },
+  { name: "Collier egy", weight: 0.2, image: 'images/Collier egy.png' },
+  { name: "Vin 1893", weight: 0.2, image: 'images/Vin 1893.png' },
+  { name: "Whisky 1933", weight: 0.2, image: 'images/Whisky 1933.png' },
+  { name: "Champ 1812", weight: 0.3, image: 'images/Champ 1812.png' },
+  { name: "Verre jouve", weight: 0.1, image: 'images/Verre jouve.png' },
+  { name: "Diamant", weight: 0.3, image: 'images/Diamant.png' },
+  { name: "Emeraude", weight: 0.3, image: 'images/Emeraude.png' },
+  { name: "Perle", weight: 0.2, image: 'images/Perle.png' },
+  { name: "Cigare", weight: 0.5, image: 'images/Cigare.png' },
+  { name: "Tableau", weight: 0.6, image: 'images/Tableau.png' },
+  { name: "Rubis", weight: 0.3, image: 'images/Rubis.png' },
+  { name: "Montre", weight: 0.2, image: 'images/Montre.png' },
+
+  { name: "Poumon", weight: 0.8, image: 'images/Pmm.png' },
+  { name: "Cerveau", weight: 0.6, image: 'images/Cerv.png' },
+  { name: "Peau", weight: 0.9, image: 'images/Peau.png' },
+  { name: "Coeur", weight: 0.5, image: 'images/Coeur.png' },
+];
+/* ------------------------------------------------------------------- */
+
+const grid = document.getElementById('grid');
+const empty = document.getElementById('empty');
+const q = document.getElementById('q');
+const countEl = document.getElementById('count');
+const toast = document.getElementById('toast');
+const clearBtn = document.getElementById('clearBtn');
+
+// Visuel de secours si une image ne charge pas
+const FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" width="320" height="200">
+    <defs>
+      <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+        <stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e293b"/>
+      </linearGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#g)"/>
+    <g fill="#cbd5e1" font-family="Arial, Helvetica, sans-serif" font-size="14">
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Aperçu indisponible</text>
+    </g>
+  </svg>`);
+
+function normalize(str){
+  if(!str) return '';
+  return str.toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=> toast.classList.remove('show'), 1200);
+}
+
+function makeCard(item){
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.setAttribute('data-name', item.name);
+
+  const thumb = document.createElement('div');
+  thumb.className = 'thumb';
+
+  const img = document.createElement('img');
+  const rawSrc = item.image ?? item.images ?? '';
+  img.src = rawSrc ? encodeURI(rawSrc) : FALLBACK;
+  img.loading = 'lazy';
+  img.alt = item.name || 'Image d’item';
+  img.draggable = false;
+  img.onerror = () => { img.onerror = null; img.src = FALLBACK; };
+  thumb.appendChild(img);
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+
+  const name = document.createElement('div');
+  name.className = 'name';
+  name.textContent = item.name || '(Sans nom)';
+  if (typeof item.weight === 'number') name.title = `Poids: ${item.weight}`;
+
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.title = 'Copier le nom';
+  btn.setAttribute('aria-label', `Copier: ${item.name}`);
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+  `;
+  btn.addEventListener('click', async () => {
+    const text = item.name || '';
+    try{ await navigator.clipboard.writeText(text); }
+    catch{ window.prompt('Copier le nom avec Ctrl+C / Entrée :', text); }
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>`;
+    showToast('Nom copié !');
+    setTimeout(()=> {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`;
+    }, 900);
+  });
+
+  const metaLeft = document.createElement('div');
+  metaLeft.className = 'meta-left';
+
+  meta.appendChild(name);
+  meta.appendChild(btn);
+
+  card.appendChild(thumb);
+  card.appendChild(meta);
+  return card;
+}
+
+function render(list){
+  grid.innerHTML = '';
+  list.forEach(it => grid.appendChild(makeCard(it)));
+  countEl.textContent = list.length;
+  empty.hidden = list.length !== 0;
+}
+
+function filterItems(term){
+  const n = normalize(term);
+  if (!n) return itemDatabase;
+  return itemDatabase.filter(it => normalize(it.name).includes(n));
+}
+
+// Initial render
+render(itemDatabase);
+
+// Recherche
+q.addEventListener('input', () => render(filterItems(q.value)));
+clearBtn.addEventListener('click', () => { q.value = ''; q.focus(); render(itemDatabase); });
+</script>
+</body>
+</html>
